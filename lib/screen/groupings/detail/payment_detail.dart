@@ -77,7 +77,7 @@ class _PaymentDetailState extends State<PaymentDetail> {
       child: StreamBuilder(
           stream: FirebaseFirestore.instance
               .collection('bids')
-              .where('userId', isEqualTo: "Ron")
+              .where('userId', isEqualTo: _accountController.userId.value)
               .where('groupId', isEqualTo: widget.groupId)
               .snapshots(),
           builder:

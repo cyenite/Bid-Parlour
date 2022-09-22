@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:bid_parlour/controllers/account_controller.dart';
-import 'package:bid_parlour/helpers/database_helper.dart';
 import 'package:bid_parlour/helpers/payment_helper.dart';
 import 'package:bid_parlour/screen/groupings/detail/payment_detail.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+
+import '../../helpers/database_helper.dart';
 
 class BidView extends StatefulWidget {
   final Widget child;
@@ -229,7 +230,8 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
                                           .then((value) {
                                         if (value != null &&
                                             value['successful']) {
-                                          Timer.periodic(Duration(seconds: 2),
+                                          print(value);
+                                          Timer.periodic(Duration(seconds: 3),
                                               (timer) {
                                             PaymentHelper.invoiceStatus(
                                                     value['invoice_id'])
@@ -246,13 +248,6 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
                                               "Payment not successful");
                                         }
                                       });
-                                      /* DbHelper.makeBid(
-                                          target: widget.target,
-                                          amount: widget.price,
-                                          total: widget.total,
-                                          id: widget.id,
-                                          userId: "Ron");*/
-                                      //Get.back();
                                     },
                                     child: Container(
                                       height: 40.0,

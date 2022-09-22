@@ -43,7 +43,7 @@ class PaymentHelper {
 
   static Future<bool> invoiceStatus(String invoiceId) async {
     final response = await http.post(
-        Uri.parse('https://sandbox.intasend.com/api/v1/payment/collection/'),
+        Uri.parse('https://sandbox.intasend.com/api/v1/payment/status/'),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode(<String, dynamic>{
           "public_key": "ISPubKey_test_bb04e9a5-a200-4c53-a0fa-da5a6e066b3e",
