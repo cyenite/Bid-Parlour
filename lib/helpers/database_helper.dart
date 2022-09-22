@@ -117,9 +117,13 @@ class DbHelper {
     });
   }
 
-  static verifyBid({String invoiceId}) {
+  static verifyBid({String invoiceId, int total, int amount, String groupId}) {
     _db.collection("bids").doc(invoiceId).update({
       "complete": true,
+    });
+
+    _db.collection('groupings').doc(groupId).update({
+      "total": total + amount,
     });
   }
 

@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import '../../helpers/database_helper.dart';
 
 class BidView extends StatefulWidget {
-  final Widget child;
+  Widget child;
   int price;
   int target;
   int total;
@@ -239,7 +239,10 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
                                               if (value2) {
                                                 DbHelper.verifyBid(
                                                     invoiceId:
-                                                        value['invoice_id']);
+                                                        value['invoice_id'],
+                                                    total: widget.total,
+                                                    amount: widget.price,
+                                                    groupId: widget.docId);
                                               }
                                             });
                                           });
