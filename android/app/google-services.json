@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "240245495483",
+    "project_id": "bid-parl",
+    "storage_bucket": "bid-parl.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:240245495483:android:a4fba1cc293328aa197b9e",
+        "android_client_info": {
+          "package_name": "com.bid.parlour"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "240245495483-ovu7i9fdnlobl7vkhqissm5u25gd3ti1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bid.parlour",
+            "certificate_hash": "53b3dea873be04a8e1a9e792df9b8239b18f5bde"
+          }
+        },
+        {
+          "client_id": "240245495483-36uj3vvfaoh1i9ej66fnkpjcd14ahimq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2Pd1nPG2SrtaaL-NfLyPLkglep1Ckdhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "240245495483-36uj3vvfaoh1i9ej66fnkpjcd14ahimq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "240245495483-ebroa3tn63qmsmo8j523pd96ngpa4ohh.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "bid.cryptoTemplate"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
