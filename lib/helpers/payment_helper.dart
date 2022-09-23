@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:bid_parlour/controllers/account_controller.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 import 'database_helper.dart';
@@ -8,6 +10,7 @@ class PaymentHelper {
   static Future<Map<String, dynamic>> makePayment(
       {int target, int amount, int total, String id, String userId}) async {
     Map<String, dynamic> dataBody = {};
+    AccountController _accountController = Get.find<AccountController>();
     final response = await http.post(
         Uri.parse('https://sandbox.intasend.com/api/v1/payment/collection/'),
         headers: {"Content-Type": "application/json"},
@@ -17,9 +20,9 @@ class PaymentHelper {
           "method": "M-PESA",
           "amount": amount,
           "api_ref": id,
-          "name": "Aaron K",
-          "phone_number": "254700001267",
-          "email": "aaronrono42@gmail.com"
+          "name": _accountController.userName.value,
+          "phone_number": _accountController.phone.value,
+          "email": _accountController.email.value
         }));
     if (response.statusCode == 200) {
       Map<String, dynamic> decodedRes = jsonDecode(response.body);
