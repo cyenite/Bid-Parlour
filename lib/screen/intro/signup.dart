@@ -112,6 +112,7 @@ class _SignUpState extends State<SignUp> {
                           controller: _phoneController,
                           hint: 'M-PESA Phone Number (254*****)',
                           obscure: false,
+                          errorMessage: 'Check phone number format',
                           keyboardType: TextInputType.phone,
                           textAlign: TextAlign.start),
                     ),
@@ -256,6 +257,7 @@ class _SignUpState extends State<SignUp> {
 
   Widget _buildTextFeild({
     String hint,
+    String errorMessage,
     TextEditingController controller,
     TextInputType keyboardType,
     bool obscure,
@@ -297,6 +299,9 @@ class _SignUpState extends State<SignUp> {
                         child: widgetIcon,
                       ),
                       contentPadding: EdgeInsets.all(0.0),
+                      errorText: errorMessage == null
+                          ? 'Check this Field'
+                          : errorMessage,
                       filled: true,
                       fillColor: Colors.transparent,
                       labelText: hint,
