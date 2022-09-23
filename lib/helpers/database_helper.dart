@@ -127,6 +127,13 @@ class DbHelper {
     });
   }
 
+  static editPhoneNumber({String newPhone}) {
+    AccountController _accountController = Get.find<AccountController>();
+    _db.collection("users").doc(_accountController.userId.value).update({
+      "phone": newPhone,
+    });
+  }
+
   void saveUser(User user) async {
     Map<String, dynamic> userData = {
       "name": user.displayName,
@@ -155,6 +162,8 @@ class DbHelper {
   static logout() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.setBool("loggedIn", false);
-    await FirebaseAuth.instance.signOut();
+    await FirebaseAuth.instance.signOut().then((value) {
+      Get.offAll(() => Login());
+    });
   }
 }

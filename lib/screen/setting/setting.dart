@@ -1,6 +1,9 @@
 import 'package:bid_parlour/component/style.dart';
+import 'package:bid_parlour/controllers/account_controller.dart';
+import 'package:bid_parlour/helpers/database_helper.dart';
 import 'package:bid_parlour/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Settings extends StatefulWidget {
   ThemeBloc themeBloc;
@@ -12,9 +15,13 @@ class Settings extends StatefulWidget {
 
 class _SettingsState extends State<Settings> {
   ThemeBloc themeBloc;
+
   _SettingsState(this.themeBloc);
+
   bool theme = true;
-  String _img = "assets/image/Settings/lightMode.png";
+  String _img = "assets/image/lightMode.png";
+  AccountController _accountController = Get.find<AccountController>();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +46,7 @@ class _SettingsState extends State<Settings> {
               onTap: () {
                 if (theme == true) {
                   setState(() {
-                    _img = "assets/image/Settings/nightMode.png";
+                    _img = "assets/image/nightMode.png";
                     theme = false;
                   });
                   themeBloc.selectedTheme.add(_buildLightTheme());
@@ -47,7 +54,7 @@ class _SettingsState extends State<Settings> {
                   themeBloc.selectedTheme.add(_buildDarkTheme());
                   setState(() {
                     theme = true;
-                    _img = "assets/image/Settings/lightMode.png";
+                    _img = "assets/image/lightMode.png";
                   });
                 }
               },
@@ -74,6 +81,31 @@ class _SettingsState extends State<Settings> {
             SizedBox(
               height: 10.0,
             ),
+            InkWell(
+              onTap: () {
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return editPhoneDialog(context);
+                    });
+              },
+              child: Obx(() {
+                return listSettings(
+                    "MPESA NUMBER", _accountController.phone.value);
+              }),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
+            InkWell(
+              onTap: () {
+                DbHelper.logout();
+              },
+              child: listSettings("LOGOUT", _accountController.email.value),
+            ),
+            SizedBox(
+              height: 10.0,
+            ),
           ],
         ),
       ),
@@ -90,7 +122,9 @@ class _SettingsState extends State<Settings> {
           Text(
             header,
             style: TextStyle(
-                color: Theme.of(context).hintColor,
+                color: header == "LOGOUT"
+                    ? Colors.redAccent
+                    : Theme.of(context).hintColor,
                 fontFamily: "Sans",
                 fontSize: 13.0),
           ),
@@ -128,9 +162,6 @@ class _SettingsState extends State<Settings> {
     );
   }
 
-  ///
-  /// Change to mode light theme
-  ///
   DemoTheme _buildLightTheme() {
     return DemoTheme(
         'light',
@@ -147,9 +178,6 @@ class _SettingsState extends State<Settings> {
         ));
   }
 
-  ///
-  /// Change to mode dark theme
-  ///
   DemoTheme _buildDarkTheme() {
     return DemoTheme(
         'dark',
@@ -165,5 +193,113 @@ class _SettingsState extends State<Settings> {
           canvasColor: colorStyle.grayBackground,
           cardColor: colorStyle.grayBackground,
         ));
+  }
+
+  Widget editPhoneDialog(BuildContext ctx) {
+    final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+    String phone = "";
+    return AlertDialog(
+      icon: Icon(Icons.phone),
+      title: Text('Edit MPESA Number'),
+      content: Form(
+        key: _formKey,
+        child: TextFormField(
+          initialValue: _accountController.phone.value,
+          validator: (input) {
+            if (input.isEmpty) {
+              return 'Please enter a phone number!';
+            } else {
+              if (input.length < 12) {
+                return 'Invalid phone number';
+              }
+              if (!input.startsWith("254")) {
+                return 'User the format 2547****';
+              }
+            }
+          },
+          onChanged: (input) => phone = input,
+          onSaved: (input) => phone = input,
+          style: new TextStyle(color: Colors.white),
+          textAlign: TextAlign.start,
+          keyboardType: TextInputType.phone,
+          autocorrect: false,
+          autofocus: false,
+          decoration: InputDecoration(
+            border: InputBorder.none,
+            icon: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Icon(
+                Icons.phone_android,
+                color: colorStyle.primaryColor,
+                size: 20,
+              ),
+            ),
+            contentPadding: EdgeInsets.all(0.0),
+            filled: true,
+            fillColor: Colors.transparent,
+            labelText: 'Phone Number',
+            hintStyle: TextStyle(color: Colors.white),
+            labelStyle: TextStyle(
+              color: Colors.white70,
+            ),
+          ),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(20.0))),
+      actions: [
+        InkWell(
+          onTap: () {
+            Navigator.of(ctx).pop();
+          },
+          child: Container(
+            height: 40.0,
+            width: MediaQuery.of(context).size.width * 0.2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              color: colorStyle.background,
+            ),
+            child: Center(
+              child: Text(
+                "Cancel",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.0,
+                    letterSpacing: 1.0),
+              ),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () {
+            final formState = _formKey.currentState;
+            if (formState.validate()) {
+              _accountController.phone.value = phone;
+              DbHelper.editPhoneNumber(newPhone: phone);
+              Navigator.of(context).pop();
+            }
+          },
+          child: Container(
+            height: 40.0,
+            width: MediaQuery.of(context).size.width * 0.2,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.all(Radius.circular(10.0)),
+              color: colorStyle.primaryColor,
+            ),
+            child: Center(
+              child: Text(
+                "Submit",
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 18.0,
+                    letterSpacing: 1.0),
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 }
