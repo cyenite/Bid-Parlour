@@ -6,6 +6,7 @@ import 'package:bid_parlour/screen/setting/themes.dart';
 import 'package:flutter/material.dart';
 
 import '../groupings/groupings.dart';
+import '../wallet/wallet.dart';
 
 class BottomNavBar extends StatefulWidget {
   ///
@@ -31,7 +32,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
         return new Groupings();
         break;
       case 2:
-        return new Groupings();
+        return new Wallet();
         break;
       case 3:
         return new Announcements();

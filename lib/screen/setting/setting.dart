@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 class Settings extends StatefulWidget {
   ThemeBloc themeBloc;
 
-  Settings({Key key, this.themeBloc}) : super(key: key);
+  Settings({Key key, @required this.themeBloc}) : super(key: key);
 
   _SettingsState createState() => _SettingsState(themeBloc);
 }

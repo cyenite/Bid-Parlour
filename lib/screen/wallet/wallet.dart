@@ -1,28 +1,24 @@
 import 'dart:math';
 
 import 'package:bid_parlour/component/AssetsWallet/assetsModel.dart';
-import 'package:bid_parlour/screen/wallet/walletDetail.dart';
-import 'package:flutter/animation.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart' show timeDilation;
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:vector_math/vector_math.dart' as Vector;
 
-class wallet extends StatefulWidget {
-  @override
-  _walletState createState() => new _walletState();
+import '../../controllers/account_controller.dart';
 
-  ///
-  /// time for wave header wallet
-  ///
-  wallet() {
+class Wallet extends StatefulWidget {
+  @override
+  _WalletState createState() => new _WalletState();
+
+  Wallet() {
     timeDilation = 1.0;
   }
 }
 
-class _walletState extends State<wallet> {
+class _WalletState extends State<Wallet> {
   @override
   assetsWallet item;
   Widget build(BuildContext context) {
@@ -33,10 +29,6 @@ class _walletState extends State<wallet> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(top: 225.0),
-
-            ///
-            /// Create card list
-            ///
             child: Container(
                 child: ListView.builder(
               shrinkWrap: true,
@@ -52,9 +44,6 @@ class _walletState extends State<wallet> {
             children: <Widget>[
               new Stack(
                 children: <Widget>[
-                  ///
-                  /// Create wave header
-                  ///
                   new waveBody(
                       size: size, xOffset: 0, yOffset: 0, color: Colors.red),
                   new Opacity(
@@ -77,14 +66,14 @@ class _walletState extends State<wallet> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      "Coin Type",
+                      "Amount(KES)",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins",
                           fontSize: 14.0),
                     ),
                     Text(
-                      "Value (USDT)",
+                      "Status",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins",
@@ -163,7 +152,7 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   tileMode: TileMode.repeated,
-                  colors: [Color(0xFF15EDED), Color(0xFF029CF5)])),
+                  colors: [Color(0xFF00FF0E), Color(0xFF029CF5)])),
           child: new Container(
             margin: EdgeInsets.only(top: 75.0),
             height: 20.0,
@@ -211,14 +200,14 @@ class _waveBodyState extends State<waveBody> with TickerProviderStateMixin {
           alignment: Alignment.topCenter,
           child: Column(children: <Widget>[
             Text(
-              "Total Asseets (USDT)",
+              "Wallet Balance",
               style: TextStyle(fontFamily: "Popins", color: Colors.white),
             ),
             SizedBox(
               height: 5.0,
             ),
             Text(
-              "0.0",
+              "KES 3,200",
               style: TextStyle(
                   fontWeight: FontWeight.w700,
                   fontFamily: "Popins",
@@ -257,15 +246,12 @@ class WaveClipper extends CustomClipper<Path> {
 }
 
 Widget card(assetsWallet item, BuildContext ctx) {
+  AccountController _accountController = Get.find<AccountController>();
   return Padding(
     padding: const EdgeInsets.only(top: 7.0),
     child: Column(
       children: <Widget>[
         InkWell(
-          onTap: () {
-            Navigator.of(ctx).push(PageRouteBuilder(
-                pageBuilder: (_, __, ___) => new walletDetail()));
-          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -277,60 +263,49 @@ Widget card(assetsWallet item, BuildContext ctx) {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Padding(
-                      padding: const EdgeInsets.only(left: 5.0, right: 12.0),
-                      child: Image.asset(
-                        item.icon,
-                        height: 25.0,
-                        fit: BoxFit.contain,
-                        width: 22.0,
-                      ),
-                    ),
-                    Container(
-                      width: 95.0,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          Text(
-                            item.name,
-                            style:
-                                TextStyle(fontFamily: "Popins", fontSize: 16.5),
-                          ),
-                          Text(
-                            item.pairValue,
-                            style: TextStyle(
-                                fontFamily: "Popins",
-                                fontSize: 11.5,
-                                color: Theme.of(ctx).hintColor),
-                          )
-                        ],
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: Container(
+                        width: 95.0,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            Text(
+                              item.amount,
+                              style: TextStyle(
+                                  fontFamily: "Popins", fontSize: 16.5),
+                            ),
+                            Text(
+                              "Paid to: " + _accountController.phone.value,
+                              style: TextStyle(
+                                  fontFamily: "Popins",
+                                  fontSize: 11.5,
+                                  color: Theme.of(ctx).hintColor),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.only(right: 15.0),
+                padding: const EdgeInsets.only(right: 8.0),
                 child: Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        item.priceValue,
-                        style: TextStyle(
-                            fontFamily: "Popins",
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w600),
-                      ),
-                      Icon(
-                        Icons.keyboard_arrow_right,
-                        size: 19.0,
-                      )
-                    ],
-                  ),
-                ),
-              ),
+                    height: 35.0,
+                    width: MediaQuery.of(ctx).size.width * 0.3,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(2.0)),
+                        color: item.status == "Complete"
+                            ? Colors.green
+                            : Colors.blue),
+                    child: Center(
+                        child: Text(
+                      item.status,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w600, color: Colors.white),
+                    ))),
+              )
             ],
           ),
         ),
