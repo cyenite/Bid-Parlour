@@ -140,7 +140,7 @@ class DbHelper {
       "email": user.email,
       "last_login": user.metadata.lastSignInTime.millisecondsSinceEpoch,
       "created_at": user.metadata.creationTime.millisecondsSinceEpoch,
-      "role": "patient",
+      "role": "",
     };
     final userRef = _db.collection("users").doc(user.uid);
     if ((await userRef.get()).exists) {
@@ -151,6 +151,17 @@ class DbHelper {
       await _db.collection("users").doc(user.uid).set(userData);
     }
     updatePreference(true);
+  }
+
+  static makeWithdrawalRequest(
+      {String userId, String payoutId, String amount}) {
+    Map<String, dynamic> reqData = {
+      "userId": userId,
+      "payoutId": payoutId,
+      "amount": amount
+    };
+    final dbRef =
+        _db.collection("payouts").doc(payoutId).get().then((value) => {});
   }
 
   static() {}
