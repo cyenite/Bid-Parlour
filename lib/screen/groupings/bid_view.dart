@@ -27,7 +27,7 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
         brightness: Brightness.dark,
         centerTitle: true,
         title: Text(
-          'KES. ' + progressAmount,
+          widget.type + " Bidding",
           style: TextStyle(
               fontFamily: "Gotik", fontWeight: FontWeight.w600, fontSize: 18.5),
         ),
@@ -43,6 +43,7 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
           builder: (context, snapshot) {
             if (snapshot.hasData) {
               progressAmount = snapshot.data['price'].toString();
+
               return Column(
                 children: <Widget>[
                   SizedBox(
@@ -80,7 +81,7 @@ class _BidViewState extends State<BidView> with SingleTickerProviderStateMixin {
                                 tabs: [
                                   new Tab(
                                     child: Text(
-                                      "Progress: ${snapshot.data['price']}",
+                                      "Progress: ${snapshot.data['total']}",
                                       style: TextStyle(
                                         fontSize: 15.0,
                                         fontWeight: FontWeight.w300,

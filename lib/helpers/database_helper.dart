@@ -109,6 +109,7 @@ class DbHelper {
       String type}) {
     AccountController _accountController = Get.find<AccountController>();
     print("adding bids");
+
     _db.collection("bids").doc(invoiceId).set({
       "userId": userId,
       "amount": amount,

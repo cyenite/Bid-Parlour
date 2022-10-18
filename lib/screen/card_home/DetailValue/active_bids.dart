@@ -219,7 +219,7 @@ Widget _dataLoaded(BuildContext context) {
     child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('groupings')
-            .where('completed', isEqualTo: false)
+            .where('complete', isEqualTo: false)
             .where('users', arrayContains: _accountController.userId.value)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {

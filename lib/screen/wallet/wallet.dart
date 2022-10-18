@@ -73,7 +73,7 @@ class _WalletState extends State<Wallet> {
                           fontSize: 14.0),
                     ),
                     Text(
-                      "Status",
+                      "Payment status",
                       style: TextStyle(
                           color: Theme.of(context).hintColor,
                           fontFamily: "Popins",

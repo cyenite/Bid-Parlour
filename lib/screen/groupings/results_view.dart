@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 
@@ -42,52 +43,55 @@ class _ResultViewState extends State<ResultView> {
       body: Column(
         children: <Widget>[
           Flexible(
-            child: ListView(
-              children: <Widget>[
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: 10.0, left: 15.0, right: 15.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _headerValue(),
-                      SizedBox(
-                        height: 35.0,
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 30.0,
-                ),
-                Container(
-                  height: MediaQuery.of(context).size.height * 0.3,
-                  child: Stack(
-                    children: <Widget>[
-                      ///
-                      /// Calling vertical value grafik
-                      ///
-                      _verticalValueGrafik(),
-
-                      ///
-                      /// Calling sparkLine Grafik
-                      ///
-                      _sparkLineGrafic(),
-                    ],
-                  ),
-                ),
-
-                ///
-                /// Calling horizontal value grafik
-                ///
-                _horizontalValueGrafik(),
-                SizedBox(
-                  height: 20.0,
-                ),
-                _buttonBottom(),
-              ],
-            ),
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection('winners')
+                    .where('groupId', isEqualTo: widget.id)
+                    .snapshots(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView(
+                      children: <Widget>[
+                        Padding(
+                          padding: const EdgeInsets.only(
+                              top: 10.0, left: 15.0, right: 15.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              _headerValue(snapshot.data.docs.first['userId']),
+                              SizedBox(
+                                height: 35.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 30.0,
+                        ),
+                        Container(
+                          height: MediaQuery.of(context).size.height * 0.3,
+                          child: Stack(
+                            children: <Widget>[
+                              _verticalValueGrafik(),
+                              _sparkLineGrafic(),
+                            ],
+                          ),
+                        ),
+                        _horizontalValueGrafik(),
+                        SizedBox(
+                          height: 20.0,
+                        ),
+                        _buttonBottom(),
+                      ],
+                    );
+                  } else {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                }),
           ),
         ],
       ),
@@ -156,7 +160,7 @@ class _ResultViewState extends State<ResultView> {
     );
   }
 
-  Widget _headerValue() {
+  Widget _headerValue(String winner) {
     return Column(
       children: <Widget>[
         Row(
@@ -224,7 +228,7 @@ class _ResultViewState extends State<ResultView> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10.0),
                   child: Text(
-                    "Cy3nite",
+                    winner,
                     style: TextStyle(color: Colors.greenAccent),
                   ),
                 ),

@@ -218,7 +218,7 @@ Widget _dataLoaded(BuildContext context) {
     child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('groupings')
-            .where('completed', isEqualTo: false)
+            .where('complete', isEqualTo: true)
             .where('users', arrayContains: _accountController.userId.value)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -348,7 +348,7 @@ Widget card(BuildContext ctx,
                 },
                 child: Container(
                     height: 25.0,
-                    width: MediaQuery.of(ctx).size.width * 0.15,
+                    width: MediaQuery.of(ctx).size.width * 0.2,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(2.0),

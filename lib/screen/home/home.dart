@@ -53,7 +53,7 @@ class _HomeState extends State<Home> {
             ),
             loadCard ? _loadingCardAnimation(context) : _cardLoaded(context),
             Container(
-              height: 700.0,
+              height: MediaQuery.of(context).size.height * 0.7,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -320,11 +320,6 @@ class cardLoading extends StatelessWidget {
   }
 }
 
-///
-///
-/// Calling imageLoading animation for set a grid layout
-///
-///
 Widget _loadingCardAnimation(BuildContext context) {
   return GridView.count(
       shrinkWrap: true,
@@ -340,11 +335,6 @@ Widget _loadingCardAnimation(BuildContext context) {
       ));
 }
 
-///
-///
-/// Calling ImageLoaded animation for set a grid layout
-///
-///
 Widget _cardLoaded(BuildContext context) {
   return GridView.count(
       shrinkWrap: true,

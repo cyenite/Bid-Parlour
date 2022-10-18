@@ -219,6 +219,7 @@ Widget _dataLoaded(BuildContext context, String type) {
             .collection('groupings')
             .where('type', isEqualTo: type)
             .where('isActive', isEqualTo: true)
+            .where('complete', isEqualTo: false)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
