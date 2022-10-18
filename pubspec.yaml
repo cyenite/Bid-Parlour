@@ -124,6 +124,9 @@ flutter:
       fonts:
         - asset: assets/font/pragmatica_bold.ttf
           weight: 500
+    - family: Billabong
+      fonts:
+        - asset: assets/font/Billabong.ttf
 
   assets:
     - assets/ilustration/

@@ -14,9 +14,6 @@ class PaymentDetail extends StatefulWidget {
 class _PaymentDetailState extends State<PaymentDetail> {
   AccountController _accountController = Get.find<AccountController>();
 
-  var imageNetwork = NetworkImage(
-      "https://firebasestorage.googleapis.com/v0/b/beauty-look.appspot.com/o/Screenshot_20181005-213938.png?alt=media&token=8c1abb09-4acf-45cf-9383-2f94d93f4ec9");
-
   @override
   @override
   void initState() {
@@ -76,6 +73,8 @@ class _PaymentDetailState extends State<PaymentDetail> {
     return Container(
       child: StreamBuilder(
           stream: FirebaseFirestore.instance
+              .collection('groupings')
+              .doc(widget.groupId)
               .collection('bids')
               .where('userId', isEqualTo: _accountController.userId.value)
               .where('groupId', isEqualTo: widget.groupId)

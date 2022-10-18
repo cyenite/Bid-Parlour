@@ -17,7 +17,7 @@ class gridHome {
 
 List<gridHome> listGridHome = [
   gridHome(
-      name: "MPESA",
+      name: "JACKPOT",
       image: "Test",
       chartColor: Color(0xff00ff0e),
       valueMarket: "5,6000,000",
@@ -42,7 +42,7 @@ List<gridHome> listGridHome = [
         0.0
       ]),
   gridHome(
-      name: "Bank Transfer",
+      name: "GIVEAWAY",
       image: "Test",
       chartColor: Color(0xffffcd00),
       valueMarket: "3873.98",
@@ -65,7 +65,7 @@ List<gridHome> listGridHome = [
         0.0,
       ]),
   gridHome(
-      name: "T-Kash",
+      name: "BONUSES",
       image: "Test",
       valueMarket: "132.20",
       valuePercent: "0.34%",
@@ -88,7 +88,7 @@ List<gridHome> listGridHome = [
         0.0
       ]),
   gridHome(
-      name: "Airtel Money",
+      name: "AFFILIATE",
       image: "Test",
       valueMarket: "0.31",
       valuePercent: "0.53%",

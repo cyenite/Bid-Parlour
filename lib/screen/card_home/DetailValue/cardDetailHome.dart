@@ -3,8 +3,8 @@ import 'package:bid_parlour/component/style.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 
-import 'openOrders.dart';
-import 'orderHistory.dart';
+import 'active_bids.dart';
+import 'past_bids.dart';
 
 class cardDetailHome extends StatefulWidget {
   final gridHome item;
@@ -116,8 +116,8 @@ class _cardDetailHomeState extends State<cardDetailHome> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: new TabBarView(
                                 children: [
-                                  openOrders(),
-                                  orderHistory(),
+                                  ActiveBids(),
+                                  PastBids(),
                                 ],
                               ),
                             ),

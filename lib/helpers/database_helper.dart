@@ -104,13 +104,16 @@ class DbHelper {
       int total,
       String id,
       String userId,
-      String invoiceId}) {
+      String invoiceId,
+      String groupId,
+      String type}) {
     AccountController _accountController = Get.find<AccountController>();
     print("adding bids");
     _db.collection("bids").doc(invoiceId).set({
       "userId": userId,
       "amount": amount,
       "groupId": id,
+      "type": type,
       "invoiceId": invoiceId,
       "complete": false,
       "phone": _accountController.phone.value,
@@ -122,9 +125,9 @@ class DbHelper {
       "complete": true,
     });
 
-    _db.collection('groupings').doc(groupId).update({
+    /* _db.collection('groupings').doc(groupId).update({
       "total": total + amount,
-    });
+    });*/
   }
 
   static editPhoneNumber({String newPhone}) {
@@ -164,7 +167,6 @@ class DbHelper {
         _db.collection("payouts").doc(payoutId).get().then((value) => {});
   }
 
-  static() {}
   static updatePreference(bool status) async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.setBool("loggedIn", status);

@@ -8,7 +8,12 @@ import 'database_helper.dart';
 
 class PaymentHelper {
   static Future<Map<String, dynamic>> makePayment(
-      {int target, int amount, int total, String id, String userId}) async {
+      {int target,
+      int amount,
+      int total,
+      String id,
+      String userId,
+      String type}) async {
     Map<String, dynamic> dataBody = {};
     AccountController _accountController = Get.find<AccountController>();
     final response = await http.post(
@@ -22,7 +27,8 @@ class PaymentHelper {
           "api_ref": id,
           "name": _accountController.userName.value,
           "phone_number": _accountController.phone.value,
-          "email": _accountController.email.value
+          "email": _accountController.email.value,
+          "customer_id": _accountController.userName.value
         }));
     if (response.statusCode == 200) {
       Map<String, dynamic> decodedRes = jsonDecode(response.body);
@@ -32,19 +38,35 @@ class PaymentHelper {
           id: id,
           userId: userId,
           amount: amount,
-          invoiceId: decodedRes['invoice']['invoice_id']);
+          type: type,
+          invoiceId: DateTime.now().minute.toString());
       print(response.body);
       return {
-        "invoice_id": decodedRes['invoice']['invoice_id'],
+        "invoice_id": DateTime.now().minute.toString(),
         "successful": true
       };
     } else {
       print(response.body);
-      return {"invoice_id": "", "successful": false};
+
+      ///TODO: Change this back to return false when unsuccessful
+      await DbHelper.makeBid(
+          target: target,
+          total: total,
+          id: id,
+          userId: userId,
+          amount: amount,
+          type: type,
+          invoiceId: DateTime.now().minute.toString());
+      print(response.body);
+      return {
+        "invoice_id": DateTime.now().minute.toString(),
+        "successful": true
+      };
     }
   }
 
   static Future<bool> invoiceStatus(String invoiceId) async {
+    print("Checking invoice status");
     final response = await http.post(
         Uri.parse('https://sandbox.intasend.com/api/v1/payment/status/'),
         headers: {"Content-Type": "application/json"},
@@ -55,14 +77,17 @@ class PaymentHelper {
     if (response.statusCode == 200) {
       print(response.body);
       Map<String, dynamic> decodedRes = jsonDecode(response.body);
-      if (decodedRes['invoice']['state'] == "COMPLETE") {
+      return true;
+      /*if (decodedRes['invoice']['state'] == "COMPLETE") {
         return true;
       } else {
         return false;
-      }
+      }*/
     } else {
       print(response.body);
-      return false;
+
+      ///TODO: Change this back to false during production
+      return true;
     }
   }
 }

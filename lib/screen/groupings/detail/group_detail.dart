@@ -1,10 +1,9 @@
 import 'package:bid_parlour/component/market/ethModel.dart';
 import 'package:bid_parlour/component/style.dart';
+import 'package:bid_parlour/screen/card_home/DetailValue/active_bids.dart';
+import 'package:bid_parlour/screen/card_home/DetailValue/past_bids.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
-
-import '../../card_home/DetailValue/openOrders.dart';
-import '../../card_home/DetailValue/orderHistory.dart';
 
 class GroupDetail extends StatefulWidget {
   final ethMarket item;
@@ -362,8 +361,8 @@ class _GroupDetailState extends State<GroupDetail> {
                               padding: const EdgeInsets.only(top: 10.0),
                               child: new TabBarView(
                                 children: [
-                                  openOrders(),
-                                  orderHistory(),
+                                  ActiveBids(),
+                                  PastBids(),
                                 ],
                               ),
                             ),

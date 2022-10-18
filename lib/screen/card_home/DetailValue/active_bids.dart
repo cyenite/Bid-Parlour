@@ -1,24 +1,26 @@
 import 'dart:async';
 
+import 'package:bid_parlour/controllers/account_controller.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shimmer/shimmer.dart';
 
 import '../../../component/market/ethModel.dart';
-import '../bid_view.dart';
-import '../results_view.dart';
+import '../../groupings/bid_view.dart';
+import '../../groupings/results_view.dart';
 
-class GroupTab extends StatefulWidget {
+class ActiveBids extends StatefulWidget {
   final Widget child;
-  final String type;
 
-  GroupTab({Key key, this.child, @required this.type}) : super(key: key);
+  ActiveBids({Key key, this.child}) : super(key: key);
 
-  _GroupTabState createState() => _GroupTabState();
+  _ActiveBidsState createState() => _ActiveBidsState();
 }
 
-class _GroupTabState extends State<GroupTab> {
+AccountController _accountController = Get.find<AccountController>();
+
+class _ActiveBidsState extends State<ActiveBids> {
   var imageNetwork = NetworkImage(
       "https://firebasestorage.googleapis.com/v0/b/beauty-look.appspot.com/o/a.jpg?alt=media&token=e36bbee2-4bfb-4a94-bd53-4055d29358e2");
 
@@ -27,7 +29,7 @@ class _GroupTabState extends State<GroupTab> {
   @override
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 1), () {
       setState(() {
         loadImage = false;
       });
@@ -80,7 +82,7 @@ class _GroupTabState extends State<GroupTab> {
         SizedBox(
           height: 0.0,
         ),
-        _dataLoaded(context, widget.type),
+        _dataLoaded(context),
       ],
     ));
   }
@@ -212,13 +214,13 @@ Widget loadingCard(BuildContext ctx, ethMarket item) {
   );
 }
 
-Widget _dataLoaded(BuildContext context, String type) {
+Widget _dataLoaded(BuildContext context) {
   return Container(
     child: StreamBuilder(
         stream: FirebaseFirestore.instance
             .collection('groupings')
-            .where('type', isEqualTo: type)
-            .where('isActive', isEqualTo: true)
+            .where('completed', isEqualTo: false)
+            .where('users', arrayContains: _accountController.userId.value)
             .snapshots(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (snapshot.hasData) {
@@ -237,7 +239,7 @@ Widget _dataLoaded(BuildContext context, String type) {
                         total: snapshot.data.docs[i]['total'],
                         complete: snapshot.data.docs[i]['complete'],
                         id: snapshot.data.docs[i].id,
-                        type: type);
+                        type: snapshot.data.docs[i]['type']);
                   },
                 ),
               );

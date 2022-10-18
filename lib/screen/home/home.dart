@@ -2,27 +2,25 @@ import 'dart:async';
 
 import 'package:bid_parlour/component/modelGridHome.dart';
 import 'package:bid_parlour/component/style.dart';
-import 'package:bid_parlour/screen/home/active_bid.dart';
-import 'package:bid_parlour/screen/home/past_bid.dart';
-import 'package:carousel_pro/carousel_pro.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:shimmer/shimmer.dart';
+
+import '../../widgets/gradient_text.dart';
+import '../card_home/DetailValue/active_bids.dart';
+import '../card_home/DetailValue/past_bids.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  var imageNetwork = NetworkImage(
-      "https://firebasestorage.googleapis.com/v0/b/beauty-look.appspot.com/o/Screenshot_20181005-213938.png?alt=media&token=8c1abb09-4acf-45cf-9383-2f94d93f4ec9");
-
   bool loadCard = true;
 
   @override
   @override
   void initState() {
-    Timer(Duration(seconds: 3), () {
+    Timer(Duration(seconds: 1), () {
       setState(() {
         loadCard = false;
       });
@@ -35,29 +33,24 @@ class _HomeState extends State<Home> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
+            SizedBox(height: MediaQuery.of(context).size.height * 0.05),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: GradientText(
+                'Bid Parlour',
+                style: TextStyle(
+                  fontFamily: 'Billabong',
+                  fontSize: 40.0,
+                ),
+                gradient: LinearGradient(colors: [
+                  Colors.blue.shade400,
+                  Colors.green.shade400,
+                ]),
+              ),
+            ),
             SizedBox(
-                height: 210.0,
-                width: double.infinity,
-                child: new Carousel(
-                  boxFit: BoxFit.cover,
-                  dotColor: Colors.white.withOpacity(0.8),
-                  dotSize: 5.5,
-                  dotSpacing: 16.0,
-                  dotBgColor: Colors.transparent,
-                  showIndicator: true,
-                  overlayShadow: true,
-                  overlayShadowColors: Theme.of(context)
-                      .scaffoldBackgroundColor
-                      .withOpacity(0.9),
-                  overlayShadowSize: 0.25,
-                  images: [
-                    AssetImage("assets/image/banner/banner1.png"),
-                    AssetImage("assets/image/banner/banner3.jpg"),
-                    AssetImage("assets/image/banner/banner1.png"),
-                    AssetImage("assets/image/banner/banner3.jpg"),
-                  ],
-                )),
-            SizedBox(height: 10.0),
+              height: 8.0,
+            ),
             loadCard ? _loadingCardAnimation(context) : _cardLoaded(context),
             Container(
               height: 700.0,
@@ -140,8 +133,8 @@ class _HomeState extends State<Home> {
                           padding: const EdgeInsets.only(top: 10.0),
                           child: new TabBarView(
                             children: [
-                              ActiveBid(),
-                              PastBid(),
+                              ActiveBids(),
+                              PastBids(),
                             ],
                           ),
                         ),
