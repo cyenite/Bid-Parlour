@@ -9,9 +9,6 @@ import '../groupings/groupings.dart';
 import '../wallet/wallet.dart';
 
 class BottomNavBar extends StatefulWidget {
-  ///
-  /// Function themeBloc for get data theme from main.dart for double theme dark and white theme
-  ///
   ThemeBloc themeBloc;
   BottomNavBar({this.themeBloc});
 

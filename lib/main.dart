@@ -76,13 +76,16 @@ class _SplashScreenState extends State<SplashScreen> {
   ThemeBloc themeBloc;
   _SplashScreenState(this.themeBloc);
   Widget nextScreen = OnBoarding();
+  AccountController _accountController = Get.find<AccountController>();
   @override
   startTime() async {
     return new Timer(Duration(milliseconds: 4500), NavigatorPage);
   }
 
   void NavigatorPage() {
-    Navigator.of(context).pushReplacementNamed("OnBoarding");
+    Navigator.of(context).push(MaterialPageRoute(builder: (c) {
+      return nextScreen;
+    }));
   }
 
   void getAuthStatus() async {
@@ -92,12 +95,19 @@ class _SplashScreenState extends State<SplashScreen> {
         : OnBoarding(
             themeBloc: this.themeBloc,
           );
+    if (_prefs.getBool('isLoggedIn')) {
+      _accountController.phone.value = _prefs.getString("phone");
+      _accountController.userId.value = _prefs.getString("userId");
+      _accountController.userName.value = _prefs.getString("userName");
+      _accountController.email.value = _prefs.get("email");
+    }
   }
 
   @override
   void initState() {
     super.initState();
     startTime();
+    getAuthStatus();
   }
 
   Widget build(BuildContext context) {

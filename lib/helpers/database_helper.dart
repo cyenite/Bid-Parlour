@@ -1,3 +1,4 @@
+import 'package:bid_parlour/helpers/preference_helper.dart';
 import 'package:bid_parlour/screen/Bottom_Nav_Bar/bottom_nav_bar.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -39,9 +40,12 @@ class DbHelper {
             _accountController.userName.value = data['name'];
             _accountController.email.value = data['email'];
             _accountController.phone.value = data['phone'];
+            PreferenceHelper.saveAuthPreferences(true, data['name'],
+                docSnapshot.id, data['phone'], data['email']);
           }
 
           updatePreference(true);
+
           Get.off(() => BottomNavBar());
         });
       } else {
@@ -50,6 +54,8 @@ class DbHelper {
           _accountController.userName.value = name;
           _accountController.email.value = email;
           _accountController.phone.value = phone;
+          PreferenceHelper.saveAuthPreferences(
+              true, name, user.uid, phone, email);
           updatePreference(true);
           Get.off(() => BottomNavBar());
         });
@@ -83,6 +89,8 @@ class DbHelper {
           _accountController.userName.value = data['name'];
           _accountController.email.value = data['email'];
           _accountController.phone.value = data['phone'];
+          PreferenceHelper.saveAuthPreferences(
+              true, data['name'], docSnapshot.id, data['phone'], data['email']);
           if (kDebugMode) {
             print(data['role']);
           }
@@ -176,6 +184,7 @@ class DbHelper {
   static logout() async {
     SharedPreferences _prefs = await SharedPreferences.getInstance();
     _prefs.setBool("loggedIn", false);
+    _prefs.clear();
     await FirebaseAuth.instance.signOut().then((value) {
       Get.offAll(() => Login());
     });
